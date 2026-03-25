@@ -1,0 +1,374 @@
+{
+  "info": {
+    "_postman_id": "1b1e3cdf-aa29-4843-8754-3f4245764e9d",
+    "name": "DummyJSON Automation Framework",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42726146"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const timestamp = Date.now();\r",
+                  "pm.environment.set(\"currentTimeStamp\",timestamp);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "let res = pm.response.json();\r",
+                  "let requestBody = JSON.parse(pm.request.body.raw);\r",
+                  "\r",
+                  "pm.test(\"Login success\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Token exists\", () => {\r",
+                  "    pm.expect(res).to.have.property(\"accessToken\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"accessToken\", res.accessToken);\r",
+                  "\r",
+                  "pm.environment.set(\"username\", requestBody.username);\r",
+                  "pm.environment.set(\"password\", requestBody.password);\r",
+                  "\r",
+                  "let token = pm.environment.get(\"accessToken\");\r",
+                  "\r",
+                  "pm.test(\"Token is a non-empty string\", () => {\r",
+                  "    pm.expect(token).to.be.a(\"string\").and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"emilys\",\r\n  \"password\": \"emilyspass\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Create_user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status is 201\", () => {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"User ID exists\", () => {\r",
+                  "    pm.expect(res).to.have.property(\"id\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Email is correct\", () => {\r",
+                  "    pm.expect(res.email).to.include(\"@x.dummyjson.com\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"maidenName\": \"Smith\",\r\n    \"age\": 29,\r\n    \"gender\": \"female\",\r\n    \"email\": \"emily.{{$timestamp}}@x.dummyjson.com\",\r\n    \"phone\": \"+81 965-431-3024\",\r\n    \"username\": \"emilys\",\r\n    \"password\": \"emilyspass\",\r\n    \"birthDate\": \"1996-5-30\",\r\n    \"image\": \"https://dummyjson.com/icon/emilys/128\",\r\n    \"bloodGroup\": \"O-\",\r\n    \"height\": 193.24,\r\n    \"weight\": 63.16,\r\n    \"eyeColor\": \"Blue\",\r\n    \"hair\": {\r\n        \"color\": \"Brown\",\r\n        \"type\": \"Curly\"\r\n    },\r\n    \"ip\": \"42.48.100.32\",\r\n    \"address\": {\r\n        \"address\": \"626 Main Street\",\r\n        \"city\": \"Phoenix\",\r\n        \"state\": \"Mississippi\",\r\n        \"stateCode\": \"MS\",\r\n        \"postalCode\": \"29112\",\r\n        \"coordinates\": {\r\n            \"lat\": -77.16213,\r\n            \"lng\": -92.084824\r\n        },\r\n        \"country\": \"United States\"\r\n    },\r\n    \"macAddress\": \"47:fa:41:18:ec:eb\",\r\n    \"university\": \"University of Wisconsin--Madison\",\r\n    \"bank\": {\r\n        \"cardExpire\": \"05/28\",\r\n        \"cardNumber\": \"3693233511855044\",\r\n        \"cardType\": \"Diners Club International\",\r\n        \"currency\": \"GBP\",\r\n        \"iban\": \"GB74MH2UZLR9TRPHYNU8F8\"\r\n    },\r\n    \"company\": {\r\n        \"department\": \"Engineering\",\r\n        \"name\": \"Dooley, Kozey and Cronin\",\r\n        \"title\": \"Sales Manager\",\r\n        \"address\": {\r\n            \"address\": \"263 Tenth Street\",\r\n            \"city\": \"San Francisco\",\r\n            \"state\": \"Wisconsin\",\r\n            \"stateCode\": \"WI\",\r\n            \"postalCode\": \"37657\",\r\n            \"coordinates\": {\r\n                \"lat\": 71.814525,\r\n                \"lng\": -161.150263\r\n            },\r\n            \"country\": \"United States\"\r\n        }\r\n    },\r\n    \"ein\": \"977-175\",\r\n    \"ssn\": \"900-590-289\",\r\n    \"userAgent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36\",\r\n    \"crypto\": {\r\n        \"coin\": \"Bitcoin\",\r\n        \"wallet\": \"0xb9fc2fe63b2a6c003f1c324c3bfa53259162181a\",\r\n        \"network\": \"Ethereum (ERC20)\"\r\n    },\r\n    \"role\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update_user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status is 200\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"User ID exists\", () => {\r",
+                  "    pm.expect(res).to.have.property(\"id\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Email is correct\", () => {\r",
+                  "    pm.expect(res.email).to.include(\"@x.dummyjson.com\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 1,\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"maidenName\": \"Smith\",\r\n    \"age\": 29,\r\n    \"gender\": \"female\",\r\n    \"email\": \"emily.{{$timestamp}}@x.dummyjson.com\",\r\n    \"phone\": \"+81 965-431-3024\",\r\n    \"username\": \"emilys\",\r\n    \"password\": \"emilyspass\",\r\n    \"birthDate\": \"1996-5-30\",\r\n    \"image\": \"https://dummyjson.com/icon/emilys/128\",\r\n    \"bloodGroup\": \"O-\",\r\n    \"height\": 193.24,\r\n    \"weight\": 63.16,\r\n    \"eyeColor\": \"Green\",\r\n    \"hair\": {\r\n        \"color\": \"Brown\",\r\n        \"type\": \"Curly\"\r\n    },\r\n    \"ip\": \"42.48.100.32\",\r\n    \"address\": {\r\n        \"address\": \"626 Main Street\",\r\n        \"city\": \"Phoenix\",\r\n        \"state\": \"Mississippi\",\r\n        \"stateCode\": \"MS\",\r\n        \"postalCode\": \"29112\",\r\n        \"coordinates\": {\r\n            \"lat\": -77.16213,\r\n            \"lng\": -92.084824\r\n        },\r\n        \"country\": \"United States\"\r\n    },\r\n    \"macAddress\": \"47:fa:41:18:ec:eb\",\r\n    \"university\": \"University of Wisconsin--Madison\",\r\n    \"bank\": {\r\n        \"cardExpire\": \"05/28\",\r\n        \"cardNumber\": \"3693233511855044\",\r\n        \"cardType\": \"Diners Club International\",\r\n        \"currency\": \"GBP\",\r\n        \"iban\": \"GB74MH2UZLR9TRPHYNU8F8\"\r\n    },\r\n    \"company\": {\r\n        \"department\": \"Engineering\",\r\n        \"name\": \"Dooley, Kozey and Cronin\",\r\n        \"title\": \"Sales Manager\",\r\n        \"address\": {\r\n            \"address\": \"263 Tenth Street\",\r\n            \"city\": \"San Francisco\",\r\n            \"state\": \"Wisconsin\",\r\n            \"stateCode\": \"WI\",\r\n            \"postalCode\": \"37657\",\r\n            \"coordinates\": {\r\n                \"lat\": 71.814525,\r\n                \"lng\": -161.150263\r\n            },\r\n            \"country\": \"United States\"\r\n        }\r\n    },\r\n    \"ein\": \"977-175\",\r\n    \"ssn\": \"900-590-289\",\r\n    \"userAgent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36\",\r\n    \"crypto\": {\r\n        \"coin\": \"Bitcoin\",\r\n        \"wallet\": \"0xb9fc2fe63b2a6c003f1c324c3bfa53259162181a\",\r\n        \"network\": \"Ethereum (ERC20)\"\r\n    },\r\n    \"role\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{staticUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{staticUserId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete_user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\",()=> {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{staticUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{staticUserId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get_user_profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "const schema = {\r",
+                  "    \"type\": \"object\",\r",
+                  "    \"required\": [\"id\", \"firstName\", \"lastName\", \"email\", \"age\"],\r",
+                  "    \"properties\": {\r",
+                  "        \"id\": { \"type\": \"integer\" },\r",
+                  "        \"firstName\": { \"type\": \"string\" },\r",
+                  "        \"lastName\": { \"type\": \"string\" },\r",
+                  "        \"email\": { \"type\": \"string\" },\r",
+                  "        \"age\": { \"type\": \"number\" }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Schema Validation: Data types are strictly enforced\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  "let res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status is 200\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response time < 200ms\", () => {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.above(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"User ID is correct\", () => {\r",
+                  "    pm.expect(res.id).to.eql(1);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Email exists\", () => {\r",
+                  "    pm.expect(res.email).to.be.a(\"string\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{staticUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{staticUserId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get_invalid_user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "pm.test(\"Body matches string\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"not found\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{invalidId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{invalidId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "pm.test(\"Response time < 200ms\", () => {\r",
+          "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+          "});\r",
+          ""
+        ]
+      }
+    }
+  ]
+}
