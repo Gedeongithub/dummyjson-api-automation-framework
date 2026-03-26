@@ -1,22 +1,23 @@
 @echo off
 echo Running API tests...
 
-cd /d %~dp0\..
+REM Go to repo root
+cd /d %WORKSPACE%
 
+REM Show current directory
 echo Current directory:
 cd
 dir
 
-echo Creating reports folder...
+REM Create reports folder if it doesn't exist
 if not exist reports mkdir reports
 
-echo Running Newman...
-
-newman run collections/dummyjson_collection.json ^
--e environments/qa_environment.json ^
--d data/test_data.json ^
+REM Run Newman
+newman run "collections/DummyJSON Automation Framework.postman_collection.json" ^
+-e "environments/QA Environment.postman_environment.json" ^
+-d "data/data.json" ^
 -r htmlextra ^
---reporter-htmlextra-export reports/report.html ^
+--reporter-htmlextra-export "reports/report.html" ^
 --verbose
 
 echo Done!
